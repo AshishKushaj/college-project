@@ -1,3 +1,10 @@
-Real state web-app for finding and listing properties for rent and sale.
+offer ->> events
 
-Checkout [here](https://realtor-react-five.vercel.app/)
+sale category  ->> webinars
+
+rent category  ->> contest
+
+
+while creating description --->> write what type of event it first
+
+stolen college connect logo
