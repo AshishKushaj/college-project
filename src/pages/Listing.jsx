@@ -122,7 +122,7 @@ export default function Listing() {
             {listing.description}
           </p>
 
-          <ul className="flex items-center space-x-2 sm:space-x-10  text-sm font-semibold mb-6">
+          {/* <ul className="flex items-center space-x-2 sm:space-x-10  text-sm font-semibold mb-6">
             <li className="flex items-center whitespace-nowrap">
               <FaBed className="text-lg mr-1" />
               {+listing.bedrooms > 1 ? `${listing.bedrooms} Beds` : "1 Bed"}
@@ -139,7 +139,7 @@ export default function Listing() {
               <FaChair className="text-lg mr-1" />
               {listing.furnished ? "Furnished" : "Not furnished"}
             </li>
-          </ul>
+          </ul> */}
 
           {listing.userRef !== auth.currentUser?.uid && !contactLandlord && (
             <div className="mt-6 ">
@@ -147,7 +147,7 @@ export default function Listing() {
                 onClick={() => setContactLandlord(!contactLandlord)}
                 className="transition duration-150 ease-in-out text-white px-7 py-3 rounded font-medium text-sm uppercase shadow-md focus:shadow-lg hover:shadow-lg w-full text-center hover:bg-blue-800 bg-blue-600 "
               >
-                Contact Landlord
+                Contact
               </button>
             </div>
           )}
