@@ -52,6 +52,8 @@ export default function SignUn() {
       
       formDataCopy.timeStamp= serverTimestamp();
 
+      formDataCopy.interest=[];     // adding interest tab for recommender system
+
       await setDoc(doc( db , "users", user.uid), formDataCopy);
 
       toast.success("Created new account!!")
