@@ -313,41 +313,7 @@ export default function CreateListing() {
           className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate  duration-150 ease-in-out focus:text-gray-900 focus:bg-white focus:border-slate-600 mb-3 shadow-md"
         />
 
-        <h3 className="flex space-x-6 text-lg font-semibold justify-start mb-3 mt-8 underline">
-          Optional
-        </h3>
-        {
-          <div className="flex space-x-6 justify-start mb-6">
-            <div>
-              <p className="text-lg font-semibold ">Latitude</p>
-              <input
-                type="number"
-                id="latitude"
-                step="0.000001"
-                value={latitude}
-                onChange={onChange}
-                required
-                min="-90"
-                max="90"
-                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"
-              />
-            </div>
-            <div>
-              <p className="text-lg font-semibold ">Longitude</p>
-              <input
-                type="number"
-                id="longitude"
-                step="0.000001"
-                value={longitude}
-                onChange={onChange}
-                required
-                min="-180"
-                max="180"
-                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"
-              />
-            </div>
-          </div>
-        }
+        
 
         <p className="text-lg mt-6 font-semibold">Description</p>
         <textarea
@@ -453,6 +419,43 @@ export default function CreateListing() {
             className="w-full px-3 py-1.5 text-gray-700 bg-white border border-gray-300 rounded transition duration-150 ease-in-out focus:bg-white focus:border-slate-600"
           />
         </div>
+
+
+        <h3 className="flex space-x-6 text-lg font-semibold justify-start mb-3 mt-8 underline">
+          Optional
+        </h3>
+        {
+          <div className="flex space-x-6 justify-start mb-6">
+            <div>
+              <p className="text-lg font-semibold ">Latitude</p>
+              <input
+                type="number"
+                id="latitude"
+                step="0.000001"
+                value={latitude}
+                onChange={onChange}
+                required
+                min="-90"
+                max="90"
+                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"
+              />
+            </div>
+            <div>
+              <p className="text-lg font-semibold ">Longitude</p>
+              <input
+                type="number"
+                id="longitude"
+                step="0.000001"
+                value={longitude}
+                onChange={onChange}
+                required
+                min="-180"
+                max="180"
+                className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate duration-150 ease-in-out focus:bg-white focus:text-gray-700 focus:border-slate-600 text-center"
+              />
+            </div>
+          </div>
+        }
 
         <button
           type="submit"
