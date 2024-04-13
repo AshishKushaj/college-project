@@ -26,6 +26,7 @@ export default function CreateListing() {
     bathrooms: 1,
     parking: false,
     furnished: false,
+    typeOfEvent:{},
     address: "",
     description: "",
     offer: true,
@@ -52,7 +53,32 @@ export default function CreateListing() {
     latitude,
     longitude,
   } = formData;
+
+  const options=[
+
+          { value:["coding","indoor"] , label: "Coding Event " },
+
+          { value:["chess", "sports" ,"indoor"], label: "Chess Event " },
+
+          { value: ["singing", "performance", "indoor" ], label: "Singing Event " },
+
+          { value: ["dancing", "performance", "indoor"] , label: "Dancing Event " },
+
+          { value: ["cooking", "indoor"], label: "Cooking Event " },
+
+          { value: ["gaming", "sports", "indoor"], label: "Gaming Event " },
+
+          { value: ["cricket", "sports", "outdoor"], label: "Cricket Event " },
+
+          { value: ["football", "sports", "outdoor"], label: "Football Event " },
+
+          { value: ["poetry", "performance", "indoor" ], label: "Poetry Event " },
+
+  ]
+
+
   const navigate=useNavigate()
+
 
  function onChange(e) {
     let boolean = null;
@@ -82,7 +108,7 @@ export default function CreateListing() {
     e.preventDefault();
 
     setLoading(true);
-    if (+discountedPrice >= +regularPrice) {
+    if (+discountedPrice > +regularPrice) {
       setLoading(false);
       toast.error("Discounted price is more than regular price");
       return;
@@ -172,6 +198,7 @@ export default function CreateListing() {
       <h1 className="text-3xl text-center mt-6 font-bold ">Create a listing</h1>
 
       <form onSubmit={onSubmit}>
+        
         <p className=" text-lg mt-6 font-semibold  ">Webinars/Contest</p>
         <div className="flex">
           <button
@@ -314,6 +341,27 @@ export default function CreateListing() {
         />
 
         
+
+
+        <p className="text-lg mt-6 font-semibold"> Type of Event</p>
+        <select 
+
+          className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate  duration-150 ease-in-out focus:text-gray-900 focus:bg-white focus:border-slate-600 mb-6 shadow-md"
+          
+          required
+          name="typeOfEvent" id="typeOfEvent"
+          onChange={onChange}
+          >
+        
+          {options.map(option =>(
+            <option key={option.value} value={option.value} >{option.label}</option>
+
+          ))}          
+      
+
+        </select>
+
+
 
         <p className="text-lg mt-6 font-semibold">Description</p>
         <textarea
