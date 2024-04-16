@@ -26,7 +26,7 @@ export default function CreateListing() {
     bathrooms: 1,
     parking: false,
     furnished: false,
-    typeOfEvent:{},
+    typeOfEvent:[],
     address: "",
     description: "",
     offer: true,
@@ -79,6 +79,14 @@ export default function CreateListing() {
 
   const navigate=useNavigate()
 
+
+  function onChangeType(e) {
+    const selectedOptions = Array.from(e.target.selectedOptions, option => option.value);
+    setFormData(prevState => ({
+      ...prevState,
+      typeOfEvent: selectedOptions.join(",").split(",")
+    }));
+  }
 
  function onChange(e) {
     let boolean = null;
@@ -344,22 +352,20 @@ export default function CreateListing() {
 
 
         <p className="text-lg mt-6 font-semibold"> Type of Event</p>
-        <select 
-
-          className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate  duration-150 ease-in-out focus:text-gray-900 focus:bg-white focus:border-slate-600 mb-6 shadow-md"
-          
+        <select
+          className="w-full px-4 py-2 text-xl text-gray-700 bg-white border border-gray-300 rounded translate duration-150 ease-in-out focus:text-gray-900 focus:bg-white focus:border-slate-600 mb-6 shadow-md"
           required
-          name="typeOfEvent" id="typeOfEvent"
-          onChange={onChange}
-          >
-        
-          {options.map(option =>(
-            <option key={option.value} value={option.value} >{option.label}</option>
+          name="typeOfEvent"
+          id="typeOfEvent"
+          onChange={onChangeType}
+        >
+          <option value="" defaultChecked >Select Type of Event</option>
 
-          ))}          
-      
-
+          {options.map(option => (
+            <option key={option.label} value={option.value.join(",")}>{option.label}</option>
+          ))}
         </select>
+
 
 
 

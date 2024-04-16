@@ -52,7 +52,8 @@ export default function SignUn() {
       
       formDataCopy.timeStamp= serverTimestamp();
 
-      formDataCopy.interest=[];     // adding interest tab for recommender system
+      formDataCopy.interest = [];     // adding interest tab for recommender system
+      formDataCopy.liked = [];       // adding liked tab for recommender system
 
       await setDoc(doc( db , "users", user.uid), formDataCopy);
 
