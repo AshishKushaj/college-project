@@ -15,6 +15,7 @@ import EditListing from './pages/EditListing';
 import Listing from './pages/Listing';
 import Category from './pages/Category';
 import Webinars from './pages/Webinars';
+import Recommendations from './pages/Recommendations';
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
 
           <Route path="/category/:categoryName" element={<Category />} />
           <Route path="/offers" element={<Offers />} />
+          <Route path="/recommendations" element={<Recommendations />} />
           <Route path="/webinars" element={<Webinars />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/sign-up" element={<SignUp />} />

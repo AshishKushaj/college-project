@@ -7,10 +7,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import {
   FaShare,
   FaMapMarkerAlt,
-  FaBed,
-  FaBath,
-  FaParking,
-  FaChair,
+ 
 } from "react-icons/fa";
 import { EffectFade, Autoplay, Navigation, Pagination } from "swiper/modules";
 import SwiperCore from "swiper";

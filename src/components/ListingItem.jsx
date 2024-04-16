@@ -7,16 +7,11 @@ import { FaEdit } from "react-icons/fa";
 import { GoHeart, GoHeartFill } from "react-icons/go";
 import { db } from "../firebase";
 import {
-  collection,
-  deleteDoc,
   doc,
   getDoc,
-  orderBy,
-  query,
   updateDoc,
-  where,
 } from "firebase/firestore";
-import { getAuth, updateCurrentUser, updateProfile } from "firebase/auth";
+import { getAuth } from "firebase/auth";
 
 
 export default function ListingItem({ listing, id, onEdit, onDelete }) {
