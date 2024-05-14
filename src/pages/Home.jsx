@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Slider from '../components/Slider'
-import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
+import { collection, doc, getDoc, getDocs, limit, orderBy, query, where } from 'firebase/firestore';
 import { db } from '../firebase';
 import { Link } from "react-router-dom";
 import ListingItem from "../components/ListingItem";
@@ -114,6 +114,9 @@ export default function Home() {
       try {
         const auth = getAuth(); // Get the authentication object
         const user = auth.currentUser; // Get the current user
+        const userDataRef = doc(db, "users", user.uid);
+        const userDataSnap = await getDoc(userDataRef);
+        const userData = userDataSnap.data();
 
         if (!user) {
           setLoading(false);
@@ -148,16 +151,20 @@ export default function Home() {
         const querySnap = await getDocs(q);
         const listings = [];
 
+        const dislikedListings = userData?.disliked || {}; 
+
         // Iterate over the query snapshot
         querySnap.forEach(doc => {
           if (listings.length >= 4) {
             return; // Break out of the loop if we have collected four listings
           }
 
-          listings.push({
-            id: doc.id,
-            data: doc.data(),
-          });
+          if(!dislikedListings[doc.id])
+            listings.push({
+              id: doc.id,
+              data: doc.data(),
+            });
+
         });
 
         // Sort the listings based on relevance to user interests
