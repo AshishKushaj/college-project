@@ -9,14 +9,14 @@ import {
 } from "firebase/storage";
 import { getAuth } from "firebase/auth";
 import {v4 as uuidv4} from 'uuid';
-import { addDoc, collection, doc, serverTimestamp } from "firebase/firestore";
+import { addDoc, collection, doc, getDocs, serverTimestamp, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useNavigate } from "react-router-dom";
 
 export default function CreateListing() {
 
   const auth=getAuth()
-  const [geolocationEnabled, setGeoLocationEnabled] = useState(true);
+  const [geolocationEnabled] = useState(true);
   const [loading, setLoading] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -40,13 +40,8 @@ export default function CreateListing() {
   const {
     type,
     name,
-    bedrooms,
-    bathrooms,
-    parking,
-    furnished,
     address,
     description,
-    offer,
     regularPrice,
     images,
     discountedPrice,
@@ -56,23 +51,23 @@ export default function CreateListing() {
 
   const options=[
 
-          { value:["coding","indoor"] , label: "Coding Event " },
+          { value:["coding","online","indoor"] , label: "Coding Event " },
 
-          { value:["chess", "sports" ,"indoor"], label: "Chess Event " },
+          { value:["chess", "sports" ,"indoor", "game"], label: "Chess Event " },
 
-          { value: ["singing", "performance", "indoor" ], label: "Singing Event " },
+          { value: ["singing", "performance", "indoor", "art" ], label: "Singing Event " },
 
-          { value: ["dancing", "performance", "indoor"] , label: "Dancing Event " },
+          { value: ["dancing", "performance", "indoor", "art"] , label: "Dancing Event " },
 
-          { value: ["cooking", "indoor"], label: "Cooking Event " },
+          { value: ["cooking", "indoor", "lifeskill"], label: "Cooking Event " },
 
-          { value: ["gaming", "sports", "indoor"], label: "Gaming Event " },
+          { value: ["gaming", "sports", "indoor", "game"], label: "Gaming Event " },
 
-          { value: ["cricket", "sports", "outdoor"], label: "Cricket Event " },
+          { value: ["cricket", "sports", "outdoor","game"], label: "Cricket Event " },
 
-          { value: ["football", "sports", "outdoor"], label: "Football Event " },
+          { value: ["football", "sports", "outdoor","game"], label: "Football Event " },
 
-          { value: ["poetry", "performance", "indoor" ], label: "Poetry Event " },
+          { value: ["poetry", "performance", "indoor" , "art"], label: "Poetry Event " },
 
   ]
 
@@ -111,6 +106,48 @@ export default function CreateListing() {
       }));
     }
   }
+
+
+
+
+  async function notifyUsers(typeOfEvent, eventId) {
+    try {
+      const usersCollection = collection(db, "users");
+      const userDocs = await getDocs(usersCollection);
+
+      for (const userDoc of userDocs.docs) {
+        try {
+          const userData = userDoc.data();
+
+          // Check if the user loves events with similar tags
+          const lovedEvents = userData.loved || {};
+          const matchedEvents = Object.values(lovedEvents).filter(eventTagsArray => {
+            const commonTags = typeOfEvent.filter(tag => eventTagsArray.includes(tag));
+            return commonTags.length / typeOfEvent.length > 0.5; // Check for 50% match
+          });
+
+          // If there are matched events, add the eventId to user's notify array
+          if (matchedEvents.length > 0) {
+            const notifyRef = doc(db, "users", userDoc.id);
+            const newNotify = [...(userData.notify || [])];
+            if (!newNotify.includes(eventId)) {
+              newNotify.push(eventId);
+              await updateDoc(notifyRef, { notify: newNotify });
+            }
+          }
+
+        } catch (error) {
+          console.error("Error processing user:", error);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  }
+
+
+
+
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -155,6 +192,8 @@ export default function CreateListing() {
                   case "running":
                     console.log("Upload is running");
                     break;
+                  default:
+                    console.log("ok");
                 }
               },
               (error) => {
@@ -193,9 +232,32 @@ export default function CreateListing() {
     setLoading(false)
     toast.success("Listing Created!!")
 
+    // function to add to notify property of users
+    console.log("inside createtelisting before notification Listing helllo");
+
+    // Notify users about the new event
+    await notifyUsers(formDataCopy.typeOfEvent, docRef.id);
+
+    console.log("inside createtelisting after notification Listing helllo");
+
+
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
 
   }
+
+  // async function notification(typeOfEvent,id){
+  //   console.log("inside createtelisting  inside notificatoin before Notification component Listing helllo");
+
+  //   <Notification
+  //     typeOfEvent={typeOfEvent}
+  //     id={id}
+  //   />
+
+  //   console.log("inside createtelisting  inside notificatoin after Notification component Listing helllo");
+
+  // }
+
+
 
   if (loading) {
     return <Spinner />;
