@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation,  useNavigate } from 'react-router-dom';
 import { getAuth, onAuthStateChanged } from 'firebase/auth';
+import Notification from './Notification';
 
 export default function Header() {
 
@@ -44,6 +45,9 @@ export default function Header() {
 
             <li onClick={()=>navigate("/profile")} 
               className={`cursor-pointer transition ease-in-out duration-500 py-3 text-sm font-semibold text-black border-b-[3px]  ${(onRoute("/sign-in") || onRoute("/profile")) ? 'border-b-red-500 text-black' : 'border-b-transparent text-gray-400'}`}> {pageState} </li>
+
+            <li> <Notification
+            /> </li>
 
           </ul>
         </div>

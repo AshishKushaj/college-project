@@ -110,7 +110,7 @@ export default function CreateListing() {
 
 
 
-  async function notifyUsers(typeOfEvent, eventId) {
+  async function notifyUsers(typeOfEvent, eventId,type) {
     try {
       const usersCollection = collection(db, "users");
       const userDocs = await getDocs(usersCollection);
@@ -129,9 +129,24 @@ export default function CreateListing() {
           // If there are matched events, add the eventId to user's notify array
           if (matchedEvents.length > 0) {
             const notifyRef = doc(db, "users", userDoc.id);
-            const newNotify = [...(userData.notify || [])];
-            if (!newNotify.includes(eventId)) {
-              newNotify.push(eventId);
+
+            // Initialize notify object if it doesn't exist
+            const newNotify = { ...(userData.notify || {}) };
+
+            // Initialize notified object if it doesn't exist
+            if (!userData.notified) {
+              await updateDoc(notifyRef, { notified: {} });
+            }
+
+            // Check if eventId is already in the notify object
+            if (!newNotify[eventId]) {
+              newNotify[eventId] = {  
+                type: formData.type,
+                name:formData.name,
+                description: formData.description,
+                address: formData.address,
+                regularPrice: formData.regularPrice
+               }; // Assuming typeOfEvent is an array of tags
               await updateDoc(notifyRef, { notify: newNotify });
             }
           }
@@ -233,12 +248,10 @@ export default function CreateListing() {
     toast.success("Listing Created!!")
 
     // function to add to notify property of users
-    console.log("inside createtelisting before notification Listing helllo");
 
     // Notify users about the new event
-    await notifyUsers(formDataCopy.typeOfEvent, docRef.id);
+    await notifyUsers(formDataCopy.typeOfEvent, docRef.id, formDataCopy.type);
 
-    console.log("inside createtelisting after notification Listing helllo");
 
 
     navigate(`/category/${formDataCopy.type}/${docRef.id}`);
