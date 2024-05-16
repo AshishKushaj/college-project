@@ -51,23 +51,29 @@ export default function CreateListing() {
 
   const options=[
 
-          { value:["coding","online","indoor"] , label: "Coding Event " },
+          { value: ["coding", "online", "indoor", "contest"], label: "Coding Event " },
 
-          { value:["chess", "sports" ,"indoor", "game"], label: "Chess Event " },
+          { value: ["informative", "online", "talk","indoor"], label: "Informative Webinar" },
 
-          { value: ["singing", "performance", "indoor", "art" ], label: "Singing Event " },
+          { value: ["quiz", "online", "indoor", "game" , "contest"], label: "Quiz" },
 
-          { value: ["dancing", "performance", "indoor", "art"] , label: "Dancing Event " },
+          { value:["chess", "sports" ,"indoor", "contest","game"], label: "Chess Event " },
+
+          { value: ["music", "performance", "offline", "indoor", "contest",  "art" ], label: "Singing/Music Event " },
+
+          { value: ["dance", "offline", "performance", "contest", "music", "indoor", "art"], label: "Dancing Event " },
+
+          { value: ["drama", "performance", "offline","contest", "indoor", "art"], label: "Drama Event " },
 
           { value: ["cooking", "indoor", "lifeskill"], label: "Cooking Event " },
 
-          { value: ["gaming", "sports", "indoor", "game"], label: "Gaming Event " },
+          { value: ["gaming", "sports", "contest", "indoor", "game"], label: "Gaming Event " },
 
-          { value: ["cricket", "sports", "outdoor","game"], label: "Cricket Event " },
+          { value: ["cricket", "contest", "sports", "outdoor","game"], label: "Cricket Event " },
 
-          { value: ["football", "sports", "outdoor","game"], label: "Football Event " },
+          { value: ["football", "contest", "sports", "outdoor","game"], label: "Football Event " },
 
-          { value: ["poetry", "performance", "indoor" , "art"], label: "Poetry Event " },
+          { value: ["poetry", "contest", "performance", "indoor" , "art"], label: "Poetry Event " },
 
   ]
 

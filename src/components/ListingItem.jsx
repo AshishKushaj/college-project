@@ -215,7 +215,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             onMouseLeave={handleOptionsHide}
         >
             {optionsVisible && (
-                <div className="absolute top-3 right-4 flex space-x-2">
+                <div className="absolute top-10 left-4 right-4 flex space-x-2">
                     <button
                         className="bg-[#9ccc33] text-white uppercase text-xs font-semibold rounded-md px-2 py-1 shadow-lg"
                         onClick={onClickDislike}
@@ -282,7 +282,7 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
                 />
             )} */}
             <div
-                className="absolute top-3 right-4 h-[25px] text-4xl animate-bounce bg-red-200 rounded-full  border-2 cursor-pointer text-red-500 "
+                className="absolute top-3 right-4 h-[36px] text-4xl animate-bounce bg-red-300 rounded-full  border-2 cursor-pointer text-red-500 "
             >
                 {icon.component}
             </div>
