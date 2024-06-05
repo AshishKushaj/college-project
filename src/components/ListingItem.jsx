@@ -51,6 +51,74 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
         fetchLikedStatus();
     }, [id]);
 
+    const removeInterest  = async () => {
+
+        if (user) {
+            const userDataRef = doc(db, "users", user.uid);
+            const userDataSnap = await getDoc(userDataRef);
+            const userData = userDataSnap.data();
+
+            const typeOfEvent = listing.typeOfEvent || [];
+            
+            // const likedListings = userData?.liked || [];
+            // const lovedListings = userData?.loved || {};
+
+
+            // if (!(likedListings.includes(id) || lovedListings.hasOwnProperty(id)))
+            //     return;
+
+
+            // Remove each type of event from user's interest
+            const updatedInterest = userData?.interest?.map((item) => {
+                if (typeOfEvent.includes(item.value)) {
+                    if (item.count > 1) {
+                        // Decrease count if count is greater than 1
+                        return { value: item.value, count: item.count - 1 };
+                    } else {
+                        // Remove item if count is 1
+                        return null;
+                    }
+                }
+                return item;
+            }).filter((item) => item !== null);
+
+            await updateDoc(userDataRef, { interest: updatedInterest });
+            
+        }
+    };
+
+
+    const addInterest = async () => {
+
+        if (user) {
+            const userDataRef = doc(db, "users", user.uid);
+            const userDataSnap = await getDoc(userDataRef);
+            const userData = userDataSnap.data();
+
+            const typeOfEvent = listing.typeOfEvent || [];
+
+            // Add each type of event to user's interest
+            const updatedInterest = userData?.interest || [];
+            typeOfEvent.forEach((event) => {
+                const existingItem = updatedInterest.find((item) => item.value === event);
+                if (existingItem) {
+                    // Increment count if item already exists
+                    existingItem.count += 1;
+                } else {
+                    // Add new item if item doesn't exist
+                    updatedInterest.push({ value: event, count: 1 });
+                }
+            });
+
+            await updateDoc(userDataRef, { interest: updatedInterest });
+
+
+        }
+    };
+
+
+
+
     const onClickLike = async () => {
 
         if (user) {
@@ -60,18 +128,28 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
 
             const likedListings = userData?.liked || [];
 
+            const lovedListings = userData?.loved || {};
+
+
             // Toggle like status
             if (likedListings.includes(id)) {
+                
+                removeInterest(); // removing interest
+                
                 // Remove listing from likedListings
                 const updatedLikedListings = likedListings.filter((listingId) => listingId !== id);
                 await updateDoc(userDataRef, { liked: updatedLikedListings });
 
                 setIcon({component:<GoHeart />}); // Set default icon
             } else {
+                
+                if (!lovedListings.hasOwnProperty(id))
+                    addInterest(); // adding interest
+                
                 // Add listing to likedListings
                 const updatedLikedListings = [...likedListings, id];
                 await updateDoc(userDataRef, { liked: updatedLikedListings });
-
+                
                 setIcon({component:<BiSolidLike />}); // Set like icon
             }
 
@@ -93,14 +171,25 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
 
             const lovedListings = userData?.loved || {};
 
+            const likedListings = userData?.liked || [];
+
             // Toggle love status
             if (lovedListings[id]) {
+                
+                removeInterest();  //removing from interest
+
                 // Remove listing from lovedListings
                 delete lovedListings[id];
+
                 setIcon({ component: <GoHeart />}); // Set default icon
             } else {
+
+                if (!likedListings.includes(id))
+                    addInterest();  // adding to interest
+                
                 // Add listing to lovedListings
                 lovedListings[id] = listing.typeOfEvent || [];
+                
                 setIcon({ component: <GoHeartFill />});
             }
 
@@ -129,6 +218,8 @@ export default function ListingItem({ listing, id, onEdit, onDelete }) {
             } else {
                 // Add listing to dislikedListings
                 
+                removeInterest(); // removing interest
+
                 dislikedListings[id] = listing.typeOfEvent || [];
                 setIcon({ component: <BiSolidDislike />}); // Set dislike icon
             }
